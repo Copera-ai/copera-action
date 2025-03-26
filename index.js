@@ -10,7 +10,7 @@ async function run() {
 
     const http = new HttpClient('copera-integration-action');
 
-    const webhookUrl = `https://api.copera.com/webhooks/${webhookId}/${webhookToken}`;
+    const webhookUrl = `https://webhooks.copera.ai/api/integration/${webhookId}/${webhookToken}`;
 
     const payload = JSON.stringify({ message });
 
