@@ -1,0 +1,18 @@
+name: 'Copera Integration Action'
+description: "Send a message to a Copera channel using a webhook. This action allows you to notify a Copera channel by sending a message through a webhook."
+inputs:
+  webhook_id:
+    description: 'Webhook ID'
+    required: true
+  webhook_token:
+    description: 'Webhook Token'
+    required: true
+  message:
+    description: 'Commit message/title'
+    required: true
+  debug:
+    description: "Enable debug mode. If set to true, the action will output the request and response details."
+
+runs:
+  using: 'node22'
+  main: 'index.js'

@@ -1,0 +1,28 @@
+{
+  "name": "copera-action",
+  "version": "1.0.0",
+  "description": "GitHub Action for sending webhook notifications",
+  "main": "index.js",
+  "dependencies": {
+    "@actions/core": "^1.10.0"
+  },
+  "author": {
+    "name": "Christian Curi",
+    "email": "mike@copera.ai"
+  },
+  "license": "MIT",
+  "keywords": [
+    "copera",
+    "github",
+    "action",
+    "integration"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/copera-ai/copera-action"
+  },
+  "bugs": {
+    "url": "https://github.com/copera-ai/copera-action/issues"
+  },
+  "homepage": "https://github.com/copera-ai/copera-action#readme.md"
+}
