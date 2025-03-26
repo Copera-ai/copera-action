@@ -1,49 +1,32 @@
 const core = require('@actions/core');
-const https = require('node:https');
+const { HttpClient } = require('@actions/http-client');
 
 async function run() {
   try {
     const webhookId = core.getInput('webhook_id');
     const webhookToken = core.getInput('webhook_token');
     const message = core.getInput('message');
-    const debug = core.getInput('debug');
+    const debug = core.getInput('debug') === 'true';
 
-    const urlParts = new URL(`https://webhooks.copera.ai/api/integration/${webhookId}/${webhookToken}`);
-    const data = JSON.stringify({ message });
+    const http = new HttpClient('copera-integration-action');
 
-    const response = await new Promise((resolve, reject) => {
-      const options = {
-        hostname: urlParts.hostname,
-        path: urlParts.pathname + urlParts.search,
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'User-Agent': 'GitHubActions/1.0',
-          'Content-Length': data.length,
-        },
-      };
+    const webhookUrl = `https://api.copera.com/webhooks/${webhookId}/${webhookToken}`;
 
-      const req = https.request(options, (res) => {
-        let responseData = '';
-        res.on('data', (chunk) => {
-          responseData += chunk;
-        });
-        res.on('end', () => {
-          if (res.statusCode >= 200 && res.statusCode < 300) {
-            resolve(responseData);
-          } else {
-            reject(new Error(`HTTP status code ${res.statusCode}: ${responseData}`));
-          }
-        });
-      });
+    const payload = JSON.stringify({ message });
 
-      req.on('error', reject);
-      req.write(data);
-      req.end();
-    });
+    const response = await http.post(
+      webhookUrl,
+      payload,
+      {
+        'Content-Type': 'application/json'
+      }
+    );
+
+    const responseData = await response.readBody();
 
     if (debug) {
-      core.info(`Response: ${response}`);
+      core.info('Status Code:', response.message.statusCode);
+      core.info('Response:', responseData);
     }
   } catch (error) {
     if (debug) {
