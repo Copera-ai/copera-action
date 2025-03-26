@@ -4,7 +4,7 @@
   "description": "GitHub Action for sending webhook notifications",
   "main": "index.js",
   "dependencies": {
-    "@actions/core": "^1.10.0"
+    "@actions/core": "^1.11.1"
   },
   "author": {
     "name": "Christian Curi",
