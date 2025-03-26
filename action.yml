@@ -1,5 +1,5 @@
 name: 'Copera Integration Action'
-description: "Send a message to a Copera channel using a webhook. This action allows you to notify a Copera channel by sending a message through a webhook."
+description: 'Send messages to a Copera channel using webhooks'
 inputs:
   webhook_id:
     description: 'Webhook ID'
