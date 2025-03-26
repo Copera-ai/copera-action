@@ -14,7 +14,7 @@ inputs:
     description: "Enable debug mode. If set to true, the action will output the request and response details."
 
 runs:
-  using: "node22"
+  using: "node20"
   main: "index.js"
 
 branding:

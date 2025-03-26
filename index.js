@@ -1,5 +1,5 @@
-import core from '@actions/core'
-import https from 'node:https'
+const core = require('@actions/core');
+const https = require('node:https');
 
 async function run() {
   try {
