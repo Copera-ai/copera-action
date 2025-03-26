@@ -1,4 +1,4 @@
-name: "Copera Integration Action"
+name: "Copera Action"
 description: "Send messages to a Copera channel using webhooks"
 inputs:
   webhook_id:
