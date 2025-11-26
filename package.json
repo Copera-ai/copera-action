@@ -1,7 +1,7 @@
 {
   "name": "copera-action",
-  "version": "1.0.0",
-  "description": "GitHub Action for sending webhook notifications",
+  "version": "2.0.0",
+  "description": "GitHub Action for sending messages to Copera channels",
   "main": "index.js",
   "dependencies": {
     "@actions/core": "^1.11.1",

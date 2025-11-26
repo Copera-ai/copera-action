@@ -1,17 +1,22 @@
 name: "Copera Action"
-description: "Send messages to a Copera channel using webhooks"
+description: "Send messages to a Copera channel using the Copera API"
 inputs:
-  webhook_id:
-    description: "Webhook ID"
+  api_token:
+    description: "Copera API Token"
     required: true
-  webhook_token:
-    description: "Webhook Token"
+  channel_id:
+    description: "Channel ID"
     required: true
   message:
-    description: "Commit message/title"
+    description: "Message to send"
     required: true
+  sender_name:
+    description: "Optional sender name"
+    required: false
   debug:
     description: "Enable debug mode. If set to true, the action will output the request and response details."
+    required: false
+    default: "false"
 
 runs:
   using: "node20"

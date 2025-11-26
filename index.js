@@ -3,36 +3,74 @@ const { HttpClient } = require('@actions/http-client');
 
 async function run() {
   try {
-    const webhookId = core.getInput('webhook_id');
-    const webhookToken = core.getInput('webhook_token');
+    const apiToken = core.getInput('api_token');
+    const channelId = core.getInput('channel_id');
     const message = core.getInput('message');
+    const senderName = core.getInput('sender_name');
     const debug = core.getInput('debug') === 'true';
 
-    const http = new HttpClient('copera-integration-action');
+    if (!apiToken) {
+      throw new Error('api_token is required');
+    }
 
-    const webhookUrl = `https://webhooks.copera.ai/api/integration/${webhookId}/${webhookToken}`;
+    if (!channelId) {
+      throw new Error('channel_id is required');
+    }
 
-    const payload = JSON.stringify({ message });
+    if (!message) {
+      throw new Error('message is required');
+    }
+
+    const http = new HttpClient('copera-github-action');
+
+    const apiUrl = `https://api.copera.ai/public/v1/chat/channel/${channelId}/send-message`;
+
+    const payload = {
+      message: message
+    };
+
+    if (senderName) {
+      payload.name = senderName;
+    }
+
+    if (debug) {
+      core.info(`Sending message to channel: ${channelId}`);
+      core.info(`API URL: ${apiUrl}`);
+      core.info(`Payload: ${JSON.stringify(payload)}`);
+    }
 
     const response = await http.post(
-      webhookUrl,
-      payload,
+      apiUrl,
+      JSON.stringify(payload),
       {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiToken}`
       }
     );
 
-    const responseData = await response.readBody();
+    const statusCode = response.message.statusCode;
 
     if (debug) {
-      core.info('Status Code:', response.message.statusCode);
-      core.info('Response:', responseData);
+      core.info(`Status Code: ${statusCode}`);
+    }
+
+    if (statusCode === 204) {
+      core.info('✅ Message sent successfully to Copera channel!');
+    } else if (statusCode >= 200 && statusCode < 300) {
+      const responseData = await response.readBody();
+      if (debug) {
+        core.info(`Response: ${responseData}`);
+      }
+      core.info('✅ Message sent successfully to Copera channel!');
+    } else {
+      const responseData = await response.readBody();
+      throw new Error(`Failed to send message. Status: ${statusCode}, Response: ${responseData}`);
     }
   } catch (error) {
-    if (debug) {
+    if (core.getInput('debug') === 'true') {
       core.error(error);
     }
-    core.setFailed(error.message);
+    core.setFailed(`Action failed: ${error.message}`);
   }
 }
 
