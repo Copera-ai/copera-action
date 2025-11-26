@@ -13,6 +13,8 @@ A GitHub Action for sending messages to Copera.ai channels using the official Co
 
 ## 📋 Usage
 
+> **Note on Versioning**: You can use `@v2.0.0` for a specific version, or `@v2` to automatically get the latest v2.x updates. We recommend using `@v2.0.0` for production stability.
+
 ### Basic Example
 
 ```yaml
@@ -24,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Send Copera Message
-        uses: copera-ai/copera-action@v2
+        uses: copera-ai/copera-action@v2.0.0
         with:
           api_token: ${{ secrets.COPERA_API_TOKEN }}
           channel_id: ${{ secrets.COPERA_CHANNEL_ID }}
@@ -47,7 +49,7 @@ jobs:
 
 ```yaml
 - name: Send Copera Notification
-  uses: copera-ai/copera-action@v2
+  uses: copera-ai/copera-action@v2.0.0
   with:
     api_token: ${{ secrets.COPERA_API_TOKEN }}
     channel_id: ${{ secrets.COPERA_CHANNEL_ID }}
@@ -58,7 +60,7 @@ jobs:
 
 ```yaml
 - name: Send Copera Notification
-  uses: copera-ai/copera-action@v2
+  uses: copera-ai/copera-action@v2.0.0
   with:
     api_token: ${{ secrets.COPERA_API_TOKEN }}
     channel_id: ${{ secrets.COPERA_CHANNEL_ID }}
@@ -70,7 +72,7 @@ jobs:
 
 ```yaml
 - name: Send Copera Notification
-  uses: copera-ai/copera-action@v2
+  uses: copera-ai/copera-action@v2.0.0
   with:
     api_token: ${{ secrets.COPERA_API_TOKEN }}
     channel_id: ${{ secrets.COPERA_CHANNEL_ID }}
@@ -91,7 +93,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Notify Copera
-        uses: copera-ai/copera-action@v2
+        uses: copera-ai/copera-action@v2.0.0
         with:
           api_token: ${{ secrets.COPERA_API_TOKEN }}
           channel_id: ${{ secrets.COPERA_CHANNEL_ID }}
@@ -171,7 +173,7 @@ For more information about the API, visit the [official documentation](https://d
 To get more detailed information about requests and responses:
 
 ```yaml
-- uses: copera-ai/copera-action@v2
+- uses: copera-ai/copera-action@v2.0.0
   with:
     api_token: ${{ secrets.COPERA_API_TOKEN }}
     channel_id: ${{ secrets.COPERA_CHANNEL_ID }}

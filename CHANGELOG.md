@@ -55,7 +55,7 @@ If you're upgrading from v1.x:
 
 **After (v2.0):**
 ```yaml
-- uses: copera-ai/copera-action@v2
+- uses: copera-ai/copera-action@v2.0.0
   with:
     api_token: ${{ secrets.COPERA_API_TOKEN }}
     channel_id: ${{ secrets.COPERA_CHANNEL_ID }}
