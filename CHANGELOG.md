@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.0.0] - 2026-05-18
+
+### 🚀 Major Changes
+
+- **BREAKING**: Updated Node.js runtime from `node20` to `node24`
+  - GitHub Actions runner now supports Node.js 24 as the execution environment
+  - No code changes required — all APIs remain compatible
+
+### 🔄 Migration Guide
+
+If you're upgrading from v2.x:
+
+Update your workflow file to reference `@v3`:
+
+```yaml
+- uses: copera-ai/copera-action@v3
+  with:
+    api_token: ${{ secrets.COPERA_API_TOKEN }}
+    channel_id: ${{ secrets.COPERA_CHANNEL_ID }}
+    message: "Hello!"
+```
+
+No input changes — all parameters remain the same as v2.
+
 ## [2.0.0] - 2025-11-26
 
 ### 🚀 Major Changes
