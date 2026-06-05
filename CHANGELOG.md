@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.0.2] - 2026-06-05
+
+### 🐛 Bug Fixes
+
+- **Fix ~3 min hang at the end of the step.** On a successful `204` response the
+  action never drained the HTTP response body, so the keep-alive socket to the
+  Copera API stayed open and kept the Node process alive until the server's
+  keep-alive timeout (~3 min). The action now **always** calls
+  `response.readBody()` (the documented `@actions/http-client` pattern) and
+  disposes the client, so the process exits immediately after the message is sent.
+  - Reproduced locally: undrained 204 over HTTPS keep-alive hangs ~180s;
+    draining the body makes the process exit in <0.1s.
+  - Runtime stays `node24`; no request timeout added.
+
 ## [3.0.1] - 2026-06-05
 
 ### ✨ Improvements

@@ -2,6 +2,7 @@ const core = require('@actions/core');
 const { HttpClient } = require('@actions/http-client');
 
 async function run() {
+  let http;
   try {
     const apiToken = core.getInput('api_token');
     const channelId = core.getInput('channel_id');
@@ -27,7 +28,7 @@ async function run() {
       throw new Error('message is required');
     }
 
-    const http = new HttpClient('copera-github-action');
+    http = new HttpClient('copera-github-action');
 
     const apiUrl = `https://api.copera.ai/public/v1/chat/channel/${channelId}/send-message`;
 
@@ -58,17 +59,19 @@ async function run() {
     const elapsedMs = Date.now() - requestStart;
     const statusCode = response.message.statusCode;
 
+    // Always drain the response body, even on 204. The Copera API holds the
+    // connection open with keep-alive; if the body stream is never consumed the
+    // socket stays open and keeps the Node event loop alive until the server's
+    // keep-alive timeout (~3 min), hanging the GitHub Actions step.
+    const responseData = await response.readBody();
+
     debugLog(`HTTP request finished in ${elapsedMs}ms`);
     debugLog(`Status Code: ${statusCode}`);
+    debugLog(`Response: ${responseData}`);
 
-    if (statusCode === 204) {
-      core.info('✅ Message sent successfully to Copera channel!');
-    } else if (statusCode >= 200 && statusCode < 300) {
-      const responseData = await response.readBody();
-      debugLog(`Response: ${responseData}`);
+    if (statusCode >= 200 && statusCode < 300) {
       core.info('✅ Message sent successfully to Copera channel!');
     } else {
-      const responseData = await response.readBody();
       throw new Error(`Failed to send message. Status: ${statusCode}, Response: ${responseData}`);
     }
   } catch (error) {
@@ -76,6 +79,11 @@ async function run() {
       core.error(error);
     }
     core.setFailed(`Action failed: ${error.message}`);
+  } finally {
+    // Belt-and-suspenders: close the agent/sockets so the process exits promptly.
+    if (http) {
+      http.dispose();
+    }
   }
 }
 
