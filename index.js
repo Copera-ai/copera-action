@@ -9,6 +9,12 @@ async function run() {
     const senderName = core.getInput('sender_name');
     const debug = core.getInput('debug') === 'true';
 
+    const debugLog = (msg) => {
+      if (debug) {
+        core.info(`[${new Date().toISOString()}] ${msg}`);
+      }
+    };
+
     if (!apiToken) {
       throw new Error('api_token is required');
     }
@@ -33,11 +39,12 @@ async function run() {
       payload.name = senderName;
     }
 
-    if (debug) {
-      core.info(`Sending message to channel: ${channelId}`);
-      core.info(`API URL: ${apiUrl}`);
-      core.info(`Payload: ${JSON.stringify(payload)}`);
-    }
+    debugLog(`Sending message to channel: ${channelId}`);
+    debugLog(`API URL: ${apiUrl}`);
+    debugLog(`Payload: ${JSON.stringify(payload)}`);
+    debugLog('HTTP request started');
+
+    const requestStart = Date.now();
 
     const response = await http.post(
       apiUrl,
@@ -48,19 +55,17 @@ async function run() {
       }
     );
 
+    const elapsedMs = Date.now() - requestStart;
     const statusCode = response.message.statusCode;
 
-    if (debug) {
-      core.info(`Status Code: ${statusCode}`);
-    }
+    debugLog(`HTTP request finished in ${elapsedMs}ms`);
+    debugLog(`Status Code: ${statusCode}`);
 
     if (statusCode === 204) {
       core.info('✅ Message sent successfully to Copera channel!');
     } else if (statusCode >= 200 && statusCode < 300) {
       const responseData = await response.readBody();
-      if (debug) {
-        core.info(`Response: ${responseData}`);
-      }
+      debugLog(`Response: ${responseData}`);
       core.info('✅ Message sent successfully to Copera channel!');
     } else {
       const responseData = await response.readBody();

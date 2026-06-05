@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.0.1] - 2026-06-05
+
+### ✨ Improvements
+
+- Debug mode now prints ISO timestamps on every log line and the elapsed time
+  of the HTTP request (`HTTP request finished in <ms>ms`), making it easy to see
+  exactly how long the call to the Copera API takes.
+
+### 🔧 Technical Changes
+
+- Runtime remains `node24`.
+- No timeout/abort added — request still waits for the API as before.
+
 ## [3.0.0] - 2026-05-18
 
 ### 🚀 Major Changes
